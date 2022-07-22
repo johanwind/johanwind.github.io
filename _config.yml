@@ -1,15 +1,17 @@
-highlighter: rouge
 url: "https://johanwind.github.io"  # Sitemap base URL.
+title: The Good Minima
+description: >- # this means to ignore newlines
+  A blog about implicit biases in deep learning
+
+highlighter: rouge
+theme: minima
+
+google_analytics: G-SY50JXFGC9
+
 plugins:
   - jekyll-scholar
   - jekyll-feed
   - jekyll-sitemap
 
-title: The Good Minima
-description: >- # this means to ignore newlines
-  A blog about implicit biases in deep learning
-show_excerpts: false
-# Build settings
-theme: minima
-
-google_analytics: G-SY50JXFGC9
+disqus:
+  shortname: johanwind
