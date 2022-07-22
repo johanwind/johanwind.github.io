@@ -1,8 +1,8 @@
 ---
-title: A simple classification task where deeper is better
+title: "Implicit bias by small initialization: A simple classification task where deeper is better"
 layout: post
 description: In this blog post I will show an example of implicit bias on a synthetic classification task.
-keywords: code, near-zero initialization, deep linear networks
+keywords: code, small initialization, deep linear networks
 ---
 In this blog post I will show an example of implicit bias on a synthetic classification task. I will put code to reproduce the results in spoilers. We will implement everything using pytorch.
 
@@ -37,7 +37,7 @@ X_test,  y_test  = X[n:,:], y[n:]
 ## The models
 First, let us consider the linear classifier given by a $$d \times k$$ matrix $$W$$ where we predict the class of the data point $$X$$ as the class whose column in $$W$$ has the maximum inner product with $$X$$, i.e
 
-$$predict(X) = \text{argmax}_{i \in \{1,\dots,k\}} X \cdot W_i.$$
+$$\text{predict}(X) = \text{argmax}_{i \in \{1,\dots,k\}} X \cdot W_i.$$
 
 We optimize the model by gradient descent until we have mean cross entropy loss at most 0.01 on the training data. Note that 0.01 cross entropy is quite low, meaning we perfectly fit the training data (100% accuracy), which is only possible since our models are in the overparameterized regime.
 
@@ -67,7 +67,7 @@ We get an accuracy of 53%. The hyperparameters for learning rate (lr) and stoppi
 
 Let us now apply the rule of thumb from deep learning that "deeper is better" and add another layer.  We parameterize $$W = AB$$ for a $$d \times k$$ matrix $$A$$ and $$k\times k$$ matrix $$B$$.
 
-$$predict(X) = \text{argmax}_{i \in \{1,\dots,k\}} X \cdot [AB]_i.$$
+$$\text{predict}(X) = \text{argmax}_{i \in \{1,\dots,k\}} X \cdot [AB]_i.$$
 
 For the previous parameterization, the optimization problem was convex, but this time it is not. This means initialization matters (in particular, if we initialize $$A = B = 0$$ we will have gradient 0 and not get anywhere), let's therefore initialize by a standard initialization from deep learning called Xavier/Glorot normal initialization. Let us also run 10 times to average out the random initialization.
 
@@ -118,7 +118,7 @@ for L in [1,2,3,4,5,6]:
 ## The explanation
 To understand why depth improves generalization accuracy, we need to note that our classification problem has "low rank" in a certain sense. Consider the optimal classifier matrix $$W$$ with respect to
 
-$$predict(X) = \text{argmax}_{i \in \{1,\dots,k\}} X \cdot W_i.$$
+$$\text{predict}(X) = \text{argmax}_{i \in \{1,\dots,k\}} X \cdot W_i.$$
 
 The i'th column (so the direction of class i-1 in the 0-indexed code) of this matrix is given by $$W_i = \left(\sin\left(\frac{\pi(2i-1-k)}{k}\right), \cos\left(\frac{\pi(2i-1-k)}{k}\right), 0, \dots, 0\right)^\top$$. Note since only the first two rows of $$W$$ are non-zero, we have $$\text{rank}(W) = 2$$. Intuitively, there are much fewer matrices with rank 2 than general matrices, so if we can somehow implicitly bias our model towards low rank matrices (or preferably rank 2 matrices), we will likely get better classification accuracy.
 
@@ -164,7 +164,7 @@ We see that the singular values show up one by one. When only the first singular
 
 In contrast to scaling down the outputs, if we switch $$\frac{1}{10^4}$$ to $$10^3$$ so $$W = 10^3 ABC$$ (and adapt the learning rate to lr = 0.001), we get accuracy 57.5% with standard deviation 1%. So we are back down to accuracies around the one layer case, since we removed most of the implicit bias.
 
-Now you might wonder how we got any benefit from depth in our original setup, where we seemingly didn't have near-zero intialization. The clue is that it is really the relative size of initialization to final size which determines whether we are in the "near-zero initialization regime". Since our overfitting of the cross entropy loss results in the final matrix $$W = ABC$$ having singular values around size 100, the initialization of size around 1 becomes near-zero in comparison. You can see this in the following plot of the evolution of singular values for the original 3 layer model.
+Now you might wonder how we got any benefit from depth in our original setup, where we seemingly didn't have small intialization. The clue is that it is really the relative size of initialization to final size which determines whether we are in the "small initialization regime". Since our overfitting of the cross entropy loss results in the final matrix $$W = ABC$$ having singular values around size 100, the initialization of size around 1 becomes small in comparison. You can see this in the following plot of the evolution of singular values for the original 3 layer model.
 <img src="/images/dln_classifier_singular_normal.png" style="width: 100%; display: block; margin: 0 auto;"/>
 
-The implicit bias demonstrated in this blog has many names given by different researchers, such as near-zero initialization regime, following "saddle-to-saddle" dynamics, anti-NTK regime and rich regime / rich limit. The experiment itself was motivated by Arora's paper on [Implicit Regularization in Deep Matrix Factorization](https://arxiv.org/abs/1905.13655). In that paper they describe the differential equations for the singular values and what causes them to show up one by one to give the low rank implicit bias. Simply put, increasing the depth causes the effect to strengthen. The experiment in this paper is an adaptation of their experiment from matrix completion to classification.
+The implicit bias demonstrated in this blog has many names given by different researchers, such as near-zero / small initialization regime, following "saddle-to-saddle" dynamics, anti-NTK regime and rich regime / rich limit. The experiment itself was motivated by Arora's paper on [Implicit Regularization in Deep Matrix Factorization](https://arxiv.org/abs/1905.13655). In that paper they describe the differential equations for the singular values and what causes them to show up one by one to give the low rank implicit bias. Simply put, increasing the depth causes the effect to strengthen. The experiment in this paper is an adaptation of their experiment from matrix completion to classification.
