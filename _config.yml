@@ -1,15 +1,15 @@
 highlighter: rouge
-#permalink: /:year/:month/:day/:title/
-#environment: prod
-url: ""  # Sitemap base URL.
+url: "https://johanwind.github.io"  # Sitemap base URL.
 plugins:
   - jekyll-scholar
-  - jekyll-sitemap
   - jekyll-feed
+  - jekyll-sitemap
 
 title: The Good Minima
 description: >- # this means to ignore newlines
   A blog about implicit biases in deep learning
-show_excerpts: true
+show_excerpts: false
 # Build settings
 theme: minima
+
+google_analytics: G-SY50JXFGC9
