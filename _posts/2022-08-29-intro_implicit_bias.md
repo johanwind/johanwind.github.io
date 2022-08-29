@@ -12,16 +12,16 @@ It works *really* well for some problems. Just look at the following image gener
 
 <img src="https://www.creativeshrimp.com/wp-content/uploads/2022/06/midjourney_aiart_gleb_alexandrov_06-1170x731.jpg" style="width: 100%; display: block; margin: 0 auto;"/>
 
-Making a program to automaticaly draw a beautiful image from a text prompt would be practically impossible, before deep learning came along and did it. Other problems where deep learning is miles ahead of the competition include [image classification](https://paperswithcode.com/sota/image-classification-on-imagenet), [playing games from pixels](https://www.deepmind.com/publications/playing-atari-with-deep-reinforcement-learning) and [lossless text compression](http://www.mattmahoney.net/dc/text.html). I believe deep learning will continue to deliver breakthroughs in other areas, and I'm excited to see what those are.
+Making a program to automatically draw a beautiful image from a text prompt would be practically impossible, before deep learning came along and did it. Other problems where deep learning is miles ahead of the competition include [image classification](https://paperswithcode.com/sota/image-classification-on-imagenet), [playing games from pixels](https://www.deepmind.com/publications/playing-atari-with-deep-reinforcement-learning) and [lossless text compression](http://www.mattmahoney.net/dc/text.html). I believe deep learning will continue to deliver breakthroughs in other areas, and I'm excited to see what those are.
 
 # The problem with deep learning
-Ok, so deep learning has amazing potential, what are the problems we need to overcome to acheive that potential? In my opinion, the main problem with modern deep learning is the huge amount of engineering effort it currently requires.
+Ok, so deep learning has amazing potential, what are the problems we need to overcome to achieve that potential? In my opinion, the main problem with modern deep learning is the huge amount of engineering effort it currently requires.
 
 To get the best practical performance from deep learning, you need to add a bunch of small (but hugely important) tricks. These tricks take time to learn, and take time to apply and adjust to new problems. An example of such a trick is using *data augmentation* when training an image classifier. Concretely, a simple data augmentation would be adding horizontally flipped images to your dataset, effectively doubling the size of your dataset.
 
 Another problem is that modern deep learning requires enormous computations. More compute gives better results, so naturally you put in as much compute as you can afford. In practice, this means waiting hours or days for a model to train. This drastically increases the time required to test new code, and in general slows down development.
 
-Tuning the *hyperparameters* is also a time consuming part of modern deep learning. The performance of a deep learning model critically depends on a large number of tuning parameters, which need to be carefully chosen when applying the model to a new problem. Here is a list of some common hyperparameters:
+Tuning the *hyperparameters* is also a time-consuming part of modern deep learning. The performance of a deep learning model critically depends on numerous of tuning parameters, which need to be carefully chosen when applying the model to a new problem. Here is a list of some common hyperparameters:
 
 | Hyperparameter | Typical value | Affects model expressivity |
 | --- | ---: | ---: | ---: |
@@ -47,7 +47,7 @@ Let's compare with classical machine learning algorithms, things like linear reg
 
 $$\min_\theta L(\theta)+\lambda R(\theta).$$
 
-We can then use some numerical optimziation algorithm to find the unique minimum at parameter configuration $$\theta^*$$, and use those parameters to produce predictions. There are several hyperparameters in the optimization algorithm, but those only affect the time to convergence, so they can be left to reasonable default values. Mathematicians proved correctness of the optimzation algorithms, so the right $$\theta^*$$ is found every time. This mature theory means practitioners can focus most of their effort on making good models, since then applying the models is relatively straightforward.
+We can then use some numerical optimization algorithm to find the unique minimum at parameter configuration $$\theta^*$$, and use those parameters to produce predictions. There are several hyperparameters in the optimization algorithm, but those only affect the time to convergence, so they can be left to reasonable default values. Mathematicians proved correctness of the optimization algorithms, so the right $$\theta^*$$ is found every time. This mature theory means practitioners can focus most of their effort on making good models, since then applying the models is relatively straightforward.
 
 But modern deep learning is also optimizing a loss function? We have optimizers which can be guaranteed to find (local) minima. What's the problem? The problems start when we realize that modern deep learning methods can have way more parameters than the number of data points they are trying to fit. Even for small datasets like CIFAR with 50 000 training images, deep learning models use millions of parameters. The models are *overparameterized*. [Deep learning models can fit random training labels](https://arxiv.org/abs/1611.03530).
 
@@ -57,4 +57,4 @@ Classically, the main important aspect of a model is what kind of functions it c
 
 As a concrete example of why this is a problem, say you made a fantastic new second order optimization algorithm, it optimizes the loss function 10x faster than standard first order methods! The current deep learning models were developed and compared under the implicit bias give by current optimizers. Chances are that your second order optimizer significantly changes that implicit bias, giving worse performance, since the model was not built for the new implicit bias. The algorithm couldn't be used.
 
-Let's say we found a way to better characerize the implicit bias of modern deep learning models. Maybe we could improve it. Maybe we could train models faster, without losing out on performance. Maybe we could get rid of annoying hyperparameters. I want to find out.
+Let's say we found a way to better characterize the implicit bias of modern deep learning models. Maybe we could improve it. Maybe we could train models faster, without losing out on performance. Maybe we could get rid of annoying hyperparameters. I want to find out.
