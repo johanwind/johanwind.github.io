@@ -1,7 +1,6 @@
 url: "https://johanwind.github.io"  # Sitemap base URL.
 title: The Good Minima
-description: >- # this means to ignore newlines
-  A blog about implicit biases in deep learning
+description: A blog about implicit biases in deep learning.
 
 highlighter: rouge
 theme: minima
