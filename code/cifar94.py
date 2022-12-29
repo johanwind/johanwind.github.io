@@ -35,8 +35,8 @@ class CNN(nn.Module):
     return F.cross_entropy(x, y, reduction='none', label_smoothing=0.2), (x.argmax(dim=1) == y)*100
 
 def loadCIFAR10(device):
-  train = torchvision.datasets.CIFAR10(root="./data", train=True, download=False)
-  test  = torchvision.datasets.CIFAR10(root="./data", train=False, download=False)
+  train = torchvision.datasets.CIFAR10(root="./data", train=True, download=True)
+  test  = torchvision.datasets.CIFAR10(root="./data", train=False, download=True)
   ret = [torch.tensor(i, device=device) for i in (train.data, train.targets, test.data, test.targets)]
   std, mean = torch.std_mean(ret[0].float(),dim=(0,1,2),unbiased=True,keepdim=True)
   for i in [0,2]: ret[i] = ((ret[i]-mean)/std).to(dtype).permute(0,3,1,2)
