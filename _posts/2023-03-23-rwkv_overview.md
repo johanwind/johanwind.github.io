@@ -5,7 +5,7 @@ description: I explain what is so unique about the RWKV language model.
 keywords: neural networks
 ---
 
-For a while, I've been following and contributing a bit to the RWKV language model, an open source large language model with great potential. As ChatGPT and large language models in general have gotten a lot of attention recently, I think it's a good time to write about RWKV. In this post, I will try to explain what is so special about RWKV compared to most language models (transformers). [The next post](/2023/03/23/rwkv_details.html) will be more technical, showing in detail how RWKV actually works (with a ~100 line minimal implementation).
+For a while, I've been following and contributing a bit to the RWKV language model, an open source large language model with great potential. As ChatGPT and large language models in general have gotten a lot of attention recently, I think it's a good time to write about RWKV. In this post, I will try to explain what is so special about RWKV compared to most language models (transformers). [The other RWKV post](/2023/03/23/rwkv_details.html) is more technical, showing in detail how RWKV actually works (with a ~100 line minimal implementation).
 
 At a high level, RWKV combines the best features of RNNs and transformers. So to explain RWKV, I need to first explain those.
 
