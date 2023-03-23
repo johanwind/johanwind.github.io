@@ -5,7 +5,7 @@ description: I explain what is so unique about the RWKV language model.
 keywords: neural networks
 ---
 
-For a while, I've been following and contributing a bit to the RWKV language model, an open source large language model with great potential. As ChatGPT and large language models in general have gotten a lot of attention recently, I think it's a good time to write about RWKV. In this post, I will try to explain what is so special about RWKV compared to to most language models (i.e transformers). [The next post](/2023/03/23/rwkv_details.html) will be more technical, showing in detail how RWKV actually works (with a ~100 line minimal implementation).
+For a while, I've been following and contributing a bit to the RWKV language model, an open source large language model with great potential. As ChatGPT and large language models in general have gotten a lot of attention recently, I think it's a good time to write about RWKV. In this post, I will try to explain what is so special about RWKV compared to most language models (transformers). [The next post](/2023/03/23/rwkv_details.html) will be more technical, showing in detail how RWKV actually works (with a ~100 line minimal implementation).
 
 At a high level, RWKV combines the best features of RNNs and transformers. So to explain RWKV, I need to first explain those.
 
@@ -20,9 +20,9 @@ Because of the sequential nature of RNNs, they are hard to massively parallelize
 However, the attention mechanism scales quadratically with the length of the sequence to be processed. This effectively limits the model's input size (or "context length"). Additionally, because of the attention mechanism, when generating text, we need to keep the previous attention states in memory. This takes much more memory than an RNN which only stores a single state.
 
 # RWKV
-The RWKV model is a clever RNN architecture which enables it to be trained like a transformer. During training, we use the transformer type formulation of the architecture, which enables massive parallelization (with a sort of attention which scales linearly with the number of tokens). For inference, we use an equivalent formulation which works like an RNN with a state. This lets us get the best of both worlds.
+The RWKV model is a clever RNN architecture that enables it to be trained like a transformer. During training, we use the transformer type formulation of the architecture, which allows massive parallelization (with a sort of attention which scales linearly with the number of tokens). For inference, we use an equivalent formulation which works like an RNN with a state. This lets us get the best of both worlds.
 
-So we basically have a model which trains like a transformer, except long context length is not expensive. And during inference, we need much less memory and can implicitly handle "infinite" context length (though in practice the model might have a hard time generalizing to much longer context lengths than it saw during training).
+So we basically have a model which trains like a transformer, except long context length is not expensive. And during inference, we need much less memory and can implicitly handle "infinite" context length (though in practice, the model might have a hard time generalizing to much longer context lengths than it saw during training).
 
 OK, but what about the performance? If it's an RNN, it surely can't work as well as a transformer? Also, this just sounds like linear attention. None of the many previous linear time attention transformer architectures (like "Linformer", "Nystromformer", "Longformer", "Performer") seemed to take off.
 
