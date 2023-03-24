@@ -219,8 +219,21 @@ $$\frac{\sum_{j=1}^i e^{q_i^\top k_j} v_j}{\sum_{j=1}^i e^{q_i^\top k_j}}.$$
 
 After calculating `wkv`, the time mixing multiplies by the "receptance" `sigmoid(r)`. It does a final linear transformation before returning the result.
 
+### Converting to output probabilities
+After going through the 24 layers of time mixing and channel mixing, we need to convert the final output to predicted probabilities for the next token.
+```python
+x = layer_norm(x, *params('ln_out'))
+x = params('head')[0] @ x
+
+e_x = exp(x-np.max(x))
+probs = e_x / e_x.sum() # Softmax of x
+```
+First, we do a layer normalization. Then, we multiply by a $$50277 \times 1024$$ matrix `params('head')[0]` given by the RWKV parameters, giving us a 50277-dimensional vector. To get a probability distribution over tokens (i.e. a 50277-dimensional, non-negative vector which sums to 1), we run our `x` through a "softmax" function. The softmax of `x` is just `exp(x)/sum(exp(x))`. However, calculating `exp(x)` can cause numerical overflows, so we calculate the equivalent function `exp(x-max(x))/sum(exp(x-max(x)))`.
+
+That's it! Now you know exactly how RWKV works for generating text.
+
 ## Practical considerations
-So that's it, now you know exactly how RWKV generates text. However, in practice, there are some issues which I ignored in my simplified code. Most importantly, in practice, we care a lot about the performance / run-time of the code. This leads us to run RWKV in parallel on GPUs, use specialized GPU code written in CUDA, use 16-bit floating point numbers, and more.
+In practice, there are some issues which I ignored in my simplified code. Most importantly, in practice, we care a lot about the performance / run-time of the code. This leads us to run RWKV in parallel on GPUs, use specialized GPU code written in CUDA, use 16-bit floating point numbers, and more.
 
 ### Numerical issues
 The largest number a 16-bit floating point number (float16) can represent is 65 504, anything above that overflows, which is bad. Most of the code has no problems with this, partially because the Layer Normalizations keep values in a reasonable range. However, the RWKV attention contains exponentially large numbers (`exp(bonus + k)`). In practice, the RWKV attention is implemented in a way where we factor out an exponential factor from `num` and `den` to keep everything within float16 range. See for example the time_mixing function in [RWKV in 150 lines](https://github.com/BlinkDL/ChatRWKV/blob/main/RWKV_in_150_lines.py).
