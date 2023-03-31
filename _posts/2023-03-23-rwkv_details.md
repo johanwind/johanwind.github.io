@@ -249,4 +249,4 @@ However, the RWKV attention is inherently sequential. Fortunately, it has very l
 JAX has jax.lax.scan and jax.lax.associative_scan, which allows a pure JAX implementation to perform better than pure pytorch. However, I still estimate that JAX would lead to [about 40% slower training compared to CUDA](https://discord.com/channels/992359628979568762/992363236370436136/1000838180674736158) (that estimate may be outdated, as it was made for training a relatively small 1.5B model).
 
 # Contribute
-RWKV is an open source community project. Join the [Discord](https://discord.gg/Y5R7sXZa) and contribute! Or just ask questions or lurk.
+RWKV is an open source community project. Join the [Discord](https://discord.gg/neCJHNcDCZ) and contribute! Or just ask questions or lurk.

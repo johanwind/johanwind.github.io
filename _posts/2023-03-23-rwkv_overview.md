@@ -33,7 +33,7 @@ Well, RWKV seems to scale as well as SOTA transformers. At least up to 14 billio
 <img src="/images/rwkv_benchmark.png" style="width: 100%; display: block; margin: 0 auto;"/>
 
 # Contribute
-RWKV is an open source community project. Join the [Discord](https://discord.gg/Y5R7sXZa) and contribute (or ask questions or whatever).
+RWKV is an open source community project. Join the [Discord](https://discord.gg/neCJHNcDCZ) and contribute (or ask questions or whatever).
 
 # Cost estimates for Large Language Models
 When looking at RWKV 14B (14 billion parameters), it is easy to ask what happens when we scale to 175B like GPT-3. However, training a 175B model is expensive. Calculating the approximate training cost of a transformer-like architecture is actually straightforward.
