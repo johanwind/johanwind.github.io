@@ -178,7 +178,7 @@ The channel mixing layer takes an input `x` corresponding to this token, and the
 
 First, we linearly interpolate `x` and `last_x`, using learned weights. We run this interpolated `x` as input to a 2 layer feed forward network with squared relu activation, and finally multiply with the sigmoid activations of another feed forward network (in classical RNN terms, this would be called gating).
 
-Note that in terms of memory usage, the matrices `Wk,Wr,Wv` hold almost all the parameters (they are $$1024\times 1024$$ matrices, while the other variables are just 1024-dimensional vectors). And the matrix multiplications (`@` in python) contribute the vast majority of required computations.
+Note that in terms of memory usage, the matrices `Wk,Wr,Wv` hold almost all the parameters (the smallest of them is a $$1024\times 1024$$ matrix, while the other variables are just 1024-dimensional vectors). And the matrix multiplications (`@` in python) contribute the vast majority of required computations.
 
 ### Time mixing
 ```python
